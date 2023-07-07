@@ -43,12 +43,24 @@ namespace MyBookList.Models
         /// </summary>
         // public string Birthdate { get; set; }
 
+
+        /// <summary>
+        /// Email do utilizador
+        /// </summary>
+        [EmailAddress(ErrorMessage = "O {0} não está corretamente escrito")]
+        [Required(ErrorMessage = "O {0} é de preenchimento obrigatório")]
+        [RegularExpression("[a-z._0-9]+@gmail.com", ErrorMessage = "O {0} tem de ser do GMail")]
+        [StringLength(40)]
+        public string Email { get; set; }
+
+
         /// <summary>
         /// Lista de Estados atribuidos a Livros interagidos por um Utilizador
         /// </summary>
         [AllowNull]
         [Display(Name = "Lista de Estados")]
         public ICollection<Status>? StatusList { get; set; }
+
 
         // ************************************************
         /// <summary>
