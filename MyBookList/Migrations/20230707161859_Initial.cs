@@ -14,7 +14,7 @@ namespace MyBookList.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Biography = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -23,14 +23,27 @@ namespace MyBookList.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Genres",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Genre = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Genres", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Members",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -58,9 +71,9 @@ namespace MyBookList.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ISBN = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PublisherFK = table.Column<int>(type: "int", nullable: false)
+                    PublisherFK = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -69,8 +82,7 @@ namespace MyBookList.Migrations
                         name: "FK_Books_Publishers_PublisherFK",
                         column: x => x.PublisherFK,
                         principalTable: "Publishers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -98,22 +110,27 @@ namespace MyBookList.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Genres",
+                name: "BooksGenres",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Genre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BooksId = table.Column<int>(type: "int", nullable: true)
+                    BooksListId = table.Column<int>(type: "int", nullable: false),
+                    GenresListId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Genres", x => x.Id);
+                    table.PrimaryKey("PK_BooksGenres", x => new { x.BooksListId, x.GenresListId });
                     table.ForeignKey(
-                        name: "FK_Genres_Books_BooksId",
-                        column: x => x.BooksId,
+                        name: "FK_BooksGenres_Books_BooksListId",
+                        column: x => x.BooksListId,
                         principalTable: "Books",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BooksGenres_Genres_GenresListId",
+                        column: x => x.GenresListId,
+                        principalTable: "Genres",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -156,18 +173,18 @@ namespace MyBookList.Migrations
 
             migrationBuilder.InsertData(
                 table: "Genres",
-                columns: new[] { "Id", "BooksId", "Genre" },
+                columns: new[] { "Id", "Genre" },
                 values: new object[,]
                 {
-                    { 1, null, "Science Fiction" },
-                    { 2, null, "Fantasy" },
-                    { 3, null, "Horror" },
-                    { 4, null, "Adventure" },
-                    { 5, null, "Fiction" },
-                    { 6, null, "Paranormal" },
-                    { 7, null, "Mystery" },
-                    { 8, null, "Historical" },
-                    { 9, null, "Apocalyptic" }
+                    { 1, "Science Fiction" },
+                    { 2, "Fantasy" },
+                    { 3, "Horror" },
+                    { 4, "Adventure" },
+                    { 5, "Fiction" },
+                    { 6, "Paranormal" },
+                    { 7, "Mystery" },
+                    { 8, "Historical" },
+                    { 9, "Apocalyptic" }
                 });
 
             migrationBuilder.InsertData(
@@ -192,9 +209,9 @@ namespace MyBookList.Migrations
                 column: "PublisherFK");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Genres_BooksId",
-                table: "Genres",
-                column: "BooksId");
+                name: "IX_BooksGenres_GenresListId",
+                table: "BooksGenres",
+                column: "GenresListId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Status_BookFK",
@@ -208,13 +225,16 @@ namespace MyBookList.Migrations
                 name: "AuthorsBooks");
 
             migrationBuilder.DropTable(
-                name: "Genres");
+                name: "BooksGenres");
 
             migrationBuilder.DropTable(
                 name: "Status");
 
             migrationBuilder.DropTable(
                 name: "Authors");
+
+            migrationBuilder.DropTable(
+                name: "Genres");
 
             migrationBuilder.DropTable(
                 name: "Books");

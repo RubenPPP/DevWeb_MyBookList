@@ -12,7 +12,7 @@ using MyBookList.Data;
 namespace MyBookList.Migrations
 {
     [DbContext(typeof(MyBookListContext))]
-    [Migration("20230707022832_Initial")]
+    [Migration("20230707161859_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,6 +39,21 @@ namespace MyBookList.Migrations
                     b.ToTable("AuthorsBooks");
                 });
 
+            modelBuilder.Entity("BooksGenres", b =>
+                {
+                    b.Property<int>("BooksListId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GenresListId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BooksListId", "GenresListId");
+
+                    b.HasIndex("GenresListId");
+
+                    b.ToTable("BooksGenres");
+                });
+
             modelBuilder.Entity("MyBookList.Models.Authors", b =>
                 {
                     b.Property<int>("Id")
@@ -53,7 +68,8 @@ namespace MyBookList.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -96,12 +112,13 @@ namespace MyBookList.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PublisherFK")
+                    b.Property<int?>("PublisherFK")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
 
@@ -118,16 +135,11 @@ namespace MyBookList.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("BooksId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Genre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BooksId");
 
                     b.ToTable("Genres");
 
@@ -188,7 +200,6 @@ namespace MyBookList.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Country")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
@@ -197,7 +208,8 @@ namespace MyBookList.Migrations
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
 
@@ -298,22 +310,28 @@ namespace MyBookList.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("BooksGenres", b =>
+                {
+                    b.HasOne("MyBookList.Models.Books", null)
+                        .WithMany()
+                        .HasForeignKey("BooksListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyBookList.Models.Genres", null)
+                        .WithMany()
+                        .HasForeignKey("GenresListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("MyBookList.Models.Books", b =>
                 {
                     b.HasOne("MyBookList.Models.Publishers", "Publisher")
                         .WithMany("BookList")
-                        .HasForeignKey("PublisherFK")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PublisherFK");
 
                     b.Navigation("Publisher");
-                });
-
-            modelBuilder.Entity("MyBookList.Models.Genres", b =>
-                {
-                    b.HasOne("MyBookList.Models.Books", null)
-                        .WithMany("GenresList")
-                        .HasForeignKey("BooksId");
                 });
 
             modelBuilder.Entity("MyBookList.Models.Status", b =>
@@ -337,8 +355,6 @@ namespace MyBookList.Migrations
 
             modelBuilder.Entity("MyBookList.Models.Books", b =>
                 {
-                    b.Navigation("GenresList");
-
                     b.Navigation("StatusList");
                 });
 

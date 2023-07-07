@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace MyBookList.Models
 {
@@ -20,18 +21,22 @@ namespace MyBookList.Models
         /// </summary>
         [Required(ErrorMessage = "O {0} é de preenchimento obrigatório")]
         [MaxLength(20)]
+        [Display(Name = "Nome do Usuário")]
         public string Username { get; set; }
 
         /// <summary>
         /// Estado de privilégios de um Utilizador (Utilizador, Ajudante, Administrador, ...)
         /// </summary>
         [Required(ErrorMessage = "O {0} é de preenchimento obrigatório")]
+        [Display(Name = "Estado do Usuário")]
         public string Status { get; set; }
 
         /// <summary>
         /// País de um Utilizador
         /// </summary>
-        public string Country { get; set; }
+        [AllowNull]
+        [Display(Name = "País")]
+        public string? Country { get; set; }
 
         /// <summary>
         /// Data de Nascimento de um Utilizador
@@ -41,6 +46,8 @@ namespace MyBookList.Models
         /// <summary>
         /// Lista de Estados atribuidos a Livros interagidos por um Utilizador
         /// </summary>
-        public ICollection<Status> StatusList { get; set; }
+        [AllowNull]
+        [Display(Name = "Lista de Estados")]
+        public ICollection<Status>? StatusList { get; set; }
     }
 }

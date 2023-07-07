@@ -30,18 +30,21 @@ namespace MyBookList.Models
         /// </summary>
         [Required(ErrorMessage = "O {0} é de preenchimento obrigatório")]
         [MaxLength(30)]
+        [Display(Name = "Título")]
         public string Title { get; set; }
 
         /// <summary>
         /// Descrição do Livro
         /// </summary>
+        [Display(Name = "Descrição")]
         public string Description { get; set; }
 
         /// <summary>
         /// Lista de géneros que correspondem ao Livro
         /// </summary>
         [AllowNull]
-        public ICollection<Genres> GenresList { get; set; }
+        [Display(Name = "Géneros")]
+        public ICollection<Genres>? GenresList { get; set; }
 
         /// <summary>
         /// Rating médio atribuído ao Livro pelos utilizadores
@@ -53,26 +56,27 @@ namespace MyBookList.Models
         /// Lista de autores do Livro
         /// </summary>
         [AllowNull]
-        public ICollection<Authors> AuthorsList { get; set; }
+        [Display(Name = "Autores")]
+        public ICollection<Authors>? AuthorsList { get; set; }
 
         /// <summary>
         /// FK da editora do Livro
         /// </summary>
         [ForeignKey(nameof(Publisher))]
-        [Display(Name = "Editora")]
         [AllowNull]
-        public int PublisherFK { get; set; }
+        public int? PublisherFK { get; set; }
 
         /// <summary>
         /// Editora do Livro
         /// </summary>
         [AllowNull]
-        public Publishers Publisher { get; set; }
+        [Display(Name = "Editora")]
+        public Publishers? Publisher { get; set; }
 
         /// <summary>
         /// Lista de Estados dos Utilizadores quanto ao Livro
         /// </summary>
         [AllowNull]
-        public ICollection<Status> StatusList { get; set; }
+        public ICollection<Status>? StatusList { get; set; }
     }
 }

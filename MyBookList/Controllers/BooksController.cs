@@ -39,6 +39,8 @@ namespace MyBookList.Controllers
 
             var books = await _context.Books
                 .Include(b => b.Publisher)
+                .Include(b => b.AuthorsList)
+                .Include(b => b.GenresList)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (books == null)
             {
@@ -62,11 +64,17 @@ namespace MyBookList.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ISBN,Title,Description,GenresList, GenresList.Id,AuthorsList, AuthorsList.Id,PublisherFK")] Books books)
+        public async Task<IActionResult> Create([Bind("Id,ISBN,Title,Description,GenresList,AuthorsList,PublisherFK")] Books books, int[] GenresList, int[] AuthorsList)
         {
-
             if (ModelState.IsValid)
             {
+                // Set the selected genres, authors and publisher for the book
+                books.GenresList = await _context.Genres.Where(g => GenresList.Contains(g.Id)).ToListAsync();
+                books.AuthorsList = await _context.Authors.Where(a => AuthorsList.Contains(a.Id)).ToListAsync();
+                books.Publisher = await _context.Publishers.FindAsync(books.PublisherFK);
+                // Nulls the status list as it's a new book
+                books.StatusList = null;
+
                 _context.Add(books);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -90,6 +98,8 @@ namespace MyBookList.Controllers
             {
                 return NotFound();
             }
+            ViewData["GenresList"] = new SelectList(_context.Genres, "Id", "Genre");
+            ViewData["AuthorsList"] = new SelectList(_context.Authors, "Id", "Name", books.AuthorsList);
             ViewData["PublisherFK"] = new SelectList(_context.Publishers, "Id", "Name", books.PublisherFK);
             return View(books);
         }
@@ -99,7 +109,7 @@ namespace MyBookList.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ISBN,Title,Description,Score,PublisherFK")] Books books)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ISBN,Title,Description,GenresList,AuthorsList,PublisherFK")] Books books, int[] GenresList, int[] AuthorsList)
         {
             if (id != books.Id)
             {
@@ -110,6 +120,11 @@ namespace MyBookList.Controllers
             {
                 try
                 {
+                    // Set the selected genres, authors and publisher for the book
+                    books.GenresList = await _context.Genres.Where(g => GenresList.Contains(g.Id)).ToListAsync();
+                    books.AuthorsList = await _context.Authors.Where(a => AuthorsList.Contains(a.Id)).ToListAsync();
+                    books.Publisher = await _context.Publishers.FindAsync(books.PublisherFK);
+
                     _context.Update(books);
                     await _context.SaveChangesAsync();
                 }
@@ -127,6 +142,8 @@ namespace MyBookList.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PublisherFK"] = new SelectList(_context.Publishers, "Id", "Name", books.PublisherFK);
+            ViewData["AuthorsList"] = new SelectList(_context.Authors, "Id", "Name", books.AuthorsList);
+            ViewData["PublisherFK"] = new SelectList(_context.Publishers, "Id", "Name", books.PublisherFK);
             return View(books);
         }
 
@@ -140,6 +157,8 @@ namespace MyBookList.Controllers
 
             var books = await _context.Books
                 .Include(b => b.Publisher)
+                .Include(b => b.AuthorsList)
+                .Include(b => b.GenresList)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (books == null)
             {

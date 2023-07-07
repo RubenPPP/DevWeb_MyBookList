@@ -19,18 +19,21 @@ namespace MyBookList.Models
         /// Nome de uma Editora
         /// </summary>
         [Required(ErrorMessage = "O {0} é de preenchimento obrigatório")]
+        [Display(Name = "Nome")]
         public string Name { get; set; }
 
         /// <summary>
         /// Descrição de uma Editora
         /// </summary>
         [AllowNull]
+        [Display(Name = "Descrição")]
         public string Description { get; set; }
 
         /// <summary>
         /// Lista de Livros editados por uma Editora
         /// </summary>
         [AllowNull]
-        public ICollection<Books> BookList { get; set; }
+        [Display(Name = "Livros")]
+        public ICollection<Books>? BookList { get; set; }
     }
 }

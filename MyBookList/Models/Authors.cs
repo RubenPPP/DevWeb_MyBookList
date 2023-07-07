@@ -21,12 +21,14 @@ namespace MyBookList.Models
         /// </summary>
         [Required(ErrorMessage = "O {0} é de preenchimento obrigatório")]
         [StringLength(50)]
+        [Display(Name = "Nome")]
         public string Name { get; set; }
 
         /// <summary>
         /// Biografia de um Autor
         /// </summary>
         [AllowNull]
+        [Display(Name = "Biografia")]
         public string Biography { get; set; }
 
         /// <summary>
@@ -37,6 +39,8 @@ namespace MyBookList.Models
         /// <summary>
         /// Lista de Livros escritos por um Autor
         /// </summary>
-        public ICollection<Books> BookList { get; set; }
+        [AllowNull]
+        [Display(Name = "Livros")]
+        public ICollection<Books>? BookList { get; set; }
     }
 }

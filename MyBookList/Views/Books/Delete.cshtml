@@ -31,6 +31,32 @@
             @*@Html.DisplayFor(model => model.Score)*@
         </dd>
         -->
+        <dt class="col-sm-10">
+            @Html.DisplayNameFor(model => model.GenresList)
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (var genre in Model.GenresList)
+            {
+                <span>@genre.Genre</span>
+                if (genre != Model.GenresList.Last())
+                {
+                    <span>, </span>
+                }
+            }
+        </dd>
+        <dt class="col-sm-10">
+            @Html.DisplayNameFor(model => model.AuthorsList)
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (var author in Model.AuthorsList)
+            {
+                <span>@author.Name</span>
+                if (author != Model.AuthorsList.Last())
+                {
+                    <span>, </span>
+                }
+            }
+        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Publisher)
         </dt>
