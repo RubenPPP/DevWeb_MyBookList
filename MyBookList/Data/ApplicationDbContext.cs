@@ -1,21 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MyBookList.Models;
 
 namespace MyBookList.Data
 {
-    public class MyBookListContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext
     {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options)
+        {
+        }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<IdentityUserLogin<string>>().HasKey(l => new { l.LoginProvider, l.ProviderKey });
+
             modelBuilder.Entity<Status>()
                 .HasKey(s => new { s.MemberFK, s.BookFK });
 
             Seed(modelBuilder);
         }
+
         protected void Seed(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Authors>().HasData(
@@ -28,7 +37,7 @@ namespace MyBookList.Data
                 new Publishers { Id = 1, Name = "Tor Books", Description = "Tor Books is the primary imprint of Tor Publishing Group (previously Tom Doherty Associates), a publishing company based in New York City. It primarily publishes science fiction and fantasy titles." },
                 new Publishers { Id = 2, Name = "Ace Books", Description = "Ace Books is a publisher of science fiction and fantasy books founded in New York City in 1952 by Aaron A. Wyn. It began as a genre publisher of mysteries and westerns, and soon branched out into other genres, publishing its first science fiction title in 1953." },
                 new Publishers { Id = 3, Name = "Holt Paperbacks", Description = "Holt Paperbacks publishes reprints from all the company’s adult imprints including Henry Holt, Metropolitan Books, and Times Books. Holt Paperbacks also publishes original trade paperbacks across all the categories that Henry Holt focuses on, including literary fiction, mysteries and thrillers, history, current events, social science, adventure, biography and memoir, personal development, and psychology. Whether as an original or reprint, every book on the Holt Paperbacks list strives to deliver to the paperback reader the same high caliber of information and entertainment that is the hallmark of all Henry Holt publications. Acclaimed and bestselling authors published under the Holt Paperbacks imprint include Rick Atkinson, Noam Chomsky, Barbara Ehrenreich, Harville Hendrix, Julie Morgenstern, and Stacy Schiff." },
-                new Publishers { Id = 4, Name = "Babbage Press", Description = "Test"}
+                new Publishers { Id = 4, Name = "Babbage Press", Description = "Test" }
             );
 
             modelBuilder.Entity<Genres>().HasData(
@@ -54,14 +63,8 @@ namespace MyBookList.Data
             */
         }
 
-        public MyBookListContext (DbContextOptions<MyBookListContext> options)
-            : base(options)
-        {
-        }
 
-        public DbSet<MyBookList.Models.Genres> Genres { get; set; } = default!;
-
-        public DbSet<MyBookList.Models.Status>? Status { get; set; }
+        public DbSet<MyBookList.Models.Members>? Members { get; set; }
 
         public DbSet<MyBookList.Models.Authors>? Authors { get; set; }
 
@@ -69,6 +72,8 @@ namespace MyBookList.Data
 
         public DbSet<MyBookList.Models.Books>? Books { get; set; }
 
-        public DbSet<MyBookList.Models.Members>? Members { get; set; }
+        public DbSet<MyBookList.Models.Genres>? Genres { get; set; }
+
+        public DbSet<MyBookList.Models.Status>? Status { get; set; }
     }
 }

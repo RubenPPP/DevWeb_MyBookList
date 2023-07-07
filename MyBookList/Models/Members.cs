@@ -49,5 +49,13 @@ namespace MyBookList.Models
         [AllowNull]
         [Display(Name = "Lista de Estados")]
         public ICollection<Status>? StatusList { get; set; }
+
+        // ************************************************
+        /// <summary>
+        /// atributo para efetuar a ligação entre a base 
+        /// de dados do 'negócio' e a base de dados da autenticação
+        /// </summary>
+        public string UserId { get; set; }
+        // ************************************************
     }
 }

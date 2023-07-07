@@ -12,9 +12,9 @@ namespace MyBookList.Controllers
 {
     public class GenresController : Controller
     {
-        private readonly MyBookListContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public GenresController(MyBookListContext context)
+        public GenresController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -24,7 +24,7 @@ namespace MyBookList.Controllers
         {
               return _context.Genres != null ? 
                           View(await _context.Genres.ToListAsync()) :
-                          Problem("Entity set 'MyBookListContext.Genres'  is null.");
+                          Problem("Entity set 'ApplicationDbContext.Genres'  is null.");
         }
 
         // GET: Genres/Details/5
@@ -143,7 +143,7 @@ namespace MyBookList.Controllers
         {
             if (_context.Genres == null)
             {
-                return Problem("Entity set 'MyBookListContext.Genres'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Genres'  is null.");
             }
             var genres = await _context.Genres.FindAsync(id);
             if (genres != null)

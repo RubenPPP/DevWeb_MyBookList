@@ -12,9 +12,9 @@ namespace MyBookList.Controllers
 {
     public class PublishersController : Controller
     {
-        private readonly MyBookListContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public PublishersController(MyBookListContext context)
+        public PublishersController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -24,7 +24,7 @@ namespace MyBookList.Controllers
         {
               return _context.Publishers != null ? 
                           View(await _context.Publishers.ToListAsync()) :
-                          Problem("Entity set 'MyBookListContext.Publishers'  is null.");
+                          Problem("Entity set 'ApplicationDbContext.Publishers'  is null.");
         }
 
         // GET: Publishers/Details/5
@@ -143,7 +143,7 @@ namespace MyBookList.Controllers
         {
             if (_context.Publishers == null)
             {
-                return Problem("Entity set 'MyBookListContext.Publishers'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Publishers'  is null.");
             }
             var publishers = await _context.Publishers.FindAsync(id);
             if (publishers != null)

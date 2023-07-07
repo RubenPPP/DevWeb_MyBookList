@@ -20,7 +20,7 @@
             </th>
             <!--
             <th>
-                @*@Html.DisplayNameFor(model => model.Score)*@
+            @*@Html.DisplayNameFor(model => model.Score)*@
             </th>
             -->
             <th>
@@ -36,48 +36,49 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <!--
-            <td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <!--
+                <td>
                 @* @Html.DisplayFor(modelItem => item.Score) *@
-            </td>
-            -->
-            <td>
-                @foreach (var genre in item.GenresList)
-                {
-                    <span>@genre.Genre</span>
-                    if (genre != item.GenresList.Last())
+                </td>
+                -->
+                <td>
+                    @foreach (var genre in item.GenresList)
                     {
-                        <span>, </span>
+                        <span>@genre.Genre</span>
+                        if (genre != item.GenresList.Last())
+                        {
+                            <span>, </span>
+                        }
                     }
-                }
-            </td>
-            <td>
-                @foreach (var author in item.AuthorsList)
-                {
-                    <span>@author.Name</span>
-                    if (author != item.AuthorsList.Last())
+                </td>
+                <td>
+                    @foreach (var author in item.AuthorsList)
                     {
-                        <span>, </span>
+                        <span>@author.Name</span>
+                        if (author != item.AuthorsList.Last())
+                        {
+                            <span>, </span>
+                        }
                     }
-                }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Publisher.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Publisher.Name)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

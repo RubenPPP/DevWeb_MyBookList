@@ -12,9 +12,9 @@ namespace MyBookList.Controllers
 {
     public class MembersController : Controller
     {
-        private readonly MyBookListContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public MembersController(MyBookListContext context)
+        public MembersController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -24,7 +24,7 @@ namespace MyBookList.Controllers
         {
               return _context.Members != null ? 
                           View(await _context.Members.ToListAsync()) :
-                          Problem("Entity set 'MyBookListContext.Members'  is null.");
+                          Problem("Entity set 'ApplicationDbContext.Members'  is null.");
         }
 
         // GET: Members/Details/5
@@ -56,7 +56,7 @@ namespace MyBookList.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Username,Status,Country")] Members members)
+        public async Task<IActionResult> Create([Bind("Id,Username,Status,Country,UserId")] Members members)
         {
             if (ModelState.IsValid)
             {
@@ -88,7 +88,7 @@ namespace MyBookList.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Username,Status,Country")] Members members)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Username,Status,Country,UserId")] Members members)
         {
             if (id != members.Id)
             {
@@ -143,7 +143,7 @@ namespace MyBookList.Controllers
         {
             if (_context.Members == null)
             {
-                return Problem("Entity set 'MyBookListContext.Members'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Members'  is null.");
             }
             var members = await _context.Members.FindAsync(id);
             if (members != null)

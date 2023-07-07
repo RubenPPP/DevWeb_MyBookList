@@ -12,9 +12,9 @@ namespace MyBookList.Controllers
 {
     public class BooksController : Controller
     {
-        private readonly MyBookListContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public BooksController(MyBookListContext context)
+        public BooksController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -182,14 +182,14 @@ namespace MyBookList.Controllers
             {
                 _context.Books.Remove(books);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool BooksExists(int id)
         {
-          return (_context.Books?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Books?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

@@ -12,9 +12,9 @@ namespace MyBookList.Controllers
 {
     public class AuthorsController : Controller
     {
-        private readonly MyBookListContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public AuthorsController(MyBookListContext context)
+        public AuthorsController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -24,7 +24,7 @@ namespace MyBookList.Controllers
         {
               return _context.Authors != null ? 
                           View(await _context.Authors.ToListAsync()) :
-                          Problem("Entity set 'MyBookListContext.Authors'  is null.");
+                          Problem("Entity set 'ApplicationDbContext.Authors'  is null.");
         }
 
         // GET: Authors/Details/5
@@ -143,7 +143,7 @@ namespace MyBookList.Controllers
         {
             if (_context.Authors == null)
             {
-                return Problem("Entity set 'MyBookListContext.Authors'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Authors'  is null.");
             }
             var authors = await _context.Authors.FindAsync(id);
             if (authors != null)

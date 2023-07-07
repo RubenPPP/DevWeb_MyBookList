@@ -12,9 +12,9 @@ namespace MyBookList.Controllers
 {
     public class StatusController : Controller
     {
-        private readonly MyBookListContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public StatusController(MyBookListContext context)
+        public StatusController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -22,8 +22,8 @@ namespace MyBookList.Controllers
         // GET: Status
         public async Task<IActionResult> Index()
         {
-            var myBookListContext = _context.Status.Include(s => s.Book).Include(s => s.Member);
-            return View(await myBookListContext.ToListAsync());
+            var applicationDbContext = _context.Status.Include(s => s.Book).Include(s => s.Member);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Status/Details/5
@@ -49,8 +49,8 @@ namespace MyBookList.Controllers
         // GET: Status/Create
         public IActionResult Create()
         {
-            ViewData["BookFK"] = new SelectList(_context.Set<Books>(), "ISBN", "ISBN");
-            ViewData["MemberFK"] = new SelectList(_context.Set<Members>(), "Id", "Status");
+            ViewData["BookFK"] = new SelectList(_context.Books, "Id", "ISBN");
+            ViewData["MemberFK"] = new SelectList(_context.Members, "Id", "Status");
             return View();
         }
 
@@ -67,8 +67,8 @@ namespace MyBookList.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BookFK"] = new SelectList(_context.Set<Books>(), "ISBN", "ISBN", status.BookFK);
-            ViewData["MemberFK"] = new SelectList(_context.Set<Members>(), "Id", "Status", status.MemberFK);
+            ViewData["BookFK"] = new SelectList(_context.Books, "Id", "ISBN", status.BookFK);
+            ViewData["MemberFK"] = new SelectList(_context.Members, "Id", "Status", status.MemberFK);
             return View(status);
         }
 
@@ -85,8 +85,8 @@ namespace MyBookList.Controllers
             {
                 return NotFound();
             }
-            ViewData["BookFK"] = new SelectList(_context.Set<Books>(), "ISBN", "ISBN", status.BookFK);
-            ViewData["MemberFK"] = new SelectList(_context.Set<Members>(), "Id", "Status", status.MemberFK);
+            ViewData["BookFK"] = new SelectList(_context.Books, "Id", "ISBN", status.BookFK);
+            ViewData["MemberFK"] = new SelectList(_context.Members, "Id", "Status", status.MemberFK);
             return View(status);
         }
 
@@ -122,8 +122,8 @@ namespace MyBookList.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BookFK"] = new SelectList(_context.Set<Books>(), "ISBN", "ISBN", status.BookFK);
-            ViewData["MemberFK"] = new SelectList(_context.Set<Members>(), "Id", "Status", status.MemberFK);
+            ViewData["BookFK"] = new SelectList(_context.Books, "Id", "ISBN", status.BookFK);
+            ViewData["MemberFK"] = new SelectList(_context.Members, "Id", "Status", status.MemberFK);
             return View(status);
         }
 
@@ -154,7 +154,7 @@ namespace MyBookList.Controllers
         {
             if (_context.Status == null)
             {
-                return Problem("Entity set 'MyBookListContext.Status'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Status'  is null.");
             }
             var status = await _context.Status.FindAsync(id);
             if (status != null)

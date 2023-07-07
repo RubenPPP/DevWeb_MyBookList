@@ -16,30 +16,30 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ISBN)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Title)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Title)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Description)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Description)
         </dd>
         <!--
         <dt class = "col-sm-2">
-            @*@Html.DisplayNameFor(model => model.Score)*@
+        @*@Html.DisplayNameFor(model => model.Score)*@
         </dt>
         <dd class = "col-sm-10">
-            @*@Html.DisplayFor(model => model.Score)*@
+        @*@Html.DisplayFor(model => model.Score)*@
         </dd>
         -->
-        <dt class = "col-sm-10">
+        <dt class="col-sm-10">
             @Html.DisplayNameFor(model => model.GenresList)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @foreach (var genre in Model.GenresList)
             {
                 <span>@genre.Genre</span>
@@ -62,10 +62,10 @@
                 }
             }
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Publisher)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Publisher.Name)
         </dd>
     </dl>
