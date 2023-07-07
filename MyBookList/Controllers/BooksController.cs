@@ -22,12 +22,15 @@ namespace MyBookList.Controllers
         // GET: Books
         public async Task<IActionResult> Index()
         {
-            var myBookListContext = _context.Books.Include(b => b.Publisher);
+            var myBookListContext = _context.Books
+                .Include(b => b.Publisher)
+                .Include(b => b.AuthorsList)
+                .Include(b => b.GenresList);
             return View(await myBookListContext.ToListAsync());
         }
 
         // GET: Books/Details/5
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(int id)
         {
             if (id == null || _context.Books == null)
             {
@@ -36,7 +39,7 @@ namespace MyBookList.Controllers
 
             var books = await _context.Books
                 .Include(b => b.Publisher)
-                .FirstOrDefaultAsync(m => m.ISBN == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (books == null)
             {
                 return NotFound();
@@ -48,7 +51,9 @@ namespace MyBookList.Controllers
         // GET: Books/Create
         public IActionResult Create()
         {
+            ViewData["GenresList"] = new SelectList(_context.Genres, "Id", "Genre");
             ViewData["PublisherFK"] = new SelectList(_context.Publishers, "Id", "Name");
+            ViewData["AuthorsList"] = new SelectList(_context.Authors, "Id", "Name");
             return View();
         }
 
@@ -57,20 +62,23 @@ namespace MyBookList.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ISBN,Title,Description,Score,PublisherFK")] Books books)
+        public async Task<IActionResult> Create([Bind("Id,ISBN,Title,Description,GenresList, GenresList.Id,AuthorsList, AuthorsList.Id,PublisherFK")] Books books)
         {
+
             if (ModelState.IsValid)
             {
                 _context.Add(books);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["GenresList"] = new SelectList(_context.Genres, "Id", "Genre");
+            ViewData["AuthorsList"] = new SelectList(_context.Authors, "Id", "Name", books.AuthorsList);
             ViewData["PublisherFK"] = new SelectList(_context.Publishers, "Id", "Name", books.PublisherFK);
             return View(books);
         }
 
         // GET: Books/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(int id)
         {
             if (id == null || _context.Books == null)
             {
@@ -91,9 +99,9 @@ namespace MyBookList.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("ISBN,Title,Description,Score,PublisherFK")] Books books)
+        public async Task<IActionResult> Edit(int id, [Bind("ISBN,Title,Description,Score,PublisherFK")] Books books)
         {
-            if (id != books.ISBN)
+            if (id != books.Id)
             {
                 return NotFound();
             }
@@ -107,7 +115,7 @@ namespace MyBookList.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BooksExists(books.ISBN))
+                    if (!BooksExists(books.Id))
                     {
                         return NotFound();
                     }
@@ -123,7 +131,7 @@ namespace MyBookList.Controllers
         }
 
         // GET: Books/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(int id)
         {
             if (id == null || _context.Books == null)
             {
@@ -132,7 +140,7 @@ namespace MyBookList.Controllers
 
             var books = await _context.Books
                 .Include(b => b.Publisher)
-                .FirstOrDefaultAsync(m => m.ISBN == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (books == null)
             {
                 return NotFound();
@@ -144,7 +152,7 @@ namespace MyBookList.Controllers
         // POST: Books/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Books == null)
             {
@@ -160,9 +168,9 @@ namespace MyBookList.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BooksExists(string id)
+        private bool BooksExists(int id)
         {
-          return (_context.Books?.Any(e => e.ISBN == id)).GetValueOrDefault();
+          return (_context.Books?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

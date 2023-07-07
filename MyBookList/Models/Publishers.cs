@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace MyBookList.Models
 {
@@ -23,11 +24,13 @@ namespace MyBookList.Models
         /// <summary>
         /// Descrição de uma Editora
         /// </summary>
+        [AllowNull]
         public string Description { get; set; }
 
         /// <summary>
         /// Lista de Livros editados por uma Editora
         /// </summary>
+        [AllowNull]
         public ICollection<Books> BookList { get; set; }
     }
 }

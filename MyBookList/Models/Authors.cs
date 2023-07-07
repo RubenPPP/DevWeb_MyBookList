@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace MyBookList.Models
 {
@@ -24,6 +25,7 @@ namespace MyBookList.Models
         /// <summary>
         /// Biografia de um Autor
         /// </summary>
+        [AllowNull]
         public string Biography { get; set; }
 
         /// <summary>

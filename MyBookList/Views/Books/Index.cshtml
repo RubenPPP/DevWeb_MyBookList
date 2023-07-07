@@ -18,8 +18,16 @@
             <th>
                 @Html.DisplayNameFor(model => model.Description)
             </th>
+            <!--
             <th>
-                @Html.DisplayNameFor(model => model.Score)
+                @*@Html.DisplayNameFor(model => model.Score)*@
+            </th>
+            -->
+            <th>
+                @Html.DisplayNameFor(model => model.GenresList)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuthorsList)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Publisher)
@@ -36,8 +44,30 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
+            <!--
             <td>
-                @Html.DisplayFor(modelItem => item.Score)
+                @* @Html.DisplayFor(modelItem => item.Score) *@
+            </td>
+            -->
+            <td>
+                @foreach (var genre in item.GenresList)
+                {
+                    <span>@genre.Genre</span>
+                    if (genre != item.GenresList.Last())
+                    {
+                        <span>, </span>
+                    }
+                }
+            </td>
+            <td>
+                @foreach (var author in item.AuthorsList)
+                {
+                    <span>@author.Name</span>
+                    if (author != item.AuthorsList.Last())
+                    {
+                        <span>, </span>
+                    }
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Publisher.Name)

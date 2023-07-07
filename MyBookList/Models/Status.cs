@@ -14,11 +14,11 @@ namespace MyBookList.Models
         public Members Member { get; set; }
 
         /// <summary>
-        /// PK do ISBN de um livro a que refere o estado
+        /// PK de um livro a que refere o estado
         /// </summary>
         [Key, Column(Order = 1)]
         [Required, ForeignKey(nameof(Book))]
-        public string BookFK { get; set; }
+        public int BookFK { get; set; }
         public Books Book { get; set; }
 
         /// <summary>
