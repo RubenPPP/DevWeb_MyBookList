@@ -19,6 +19,7 @@ namespace MyBookList.Models
         /// Nome de um Autor
         /// </summary>
         [Required(ErrorMessage = "O {0} é de preenchimento obrigatório")]
+        [StringLength(50)]
         public string Name { get; set; }
 
         /// <summary>

@@ -16,12 +16,14 @@ namespace MyBookList.Models
         /// </summary>
         [Required(ErrorMessage = "O {0} é de preenchimento obrigatório")]
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [RegularExpression("[0-9]{13}", ErrorMessage = "O formato deve ser do tipo ISBN-13")]
         public string ISBN { get; set; }
 
         /// <summary>
         /// Título do Livro
         /// </summary>
         [Required(ErrorMessage = "O {0} é de preenchimento obrigatório")]
+        [MaxLength(30)]
         public string Title { get; set; }
 
         /// <summary>
@@ -48,6 +50,7 @@ namespace MyBookList.Models
         /// FK da editora do Livro
         /// </summary>
         [ForeignKey(nameof(Publisher))]
+        [Display(Name = "Editora")]
         public int PublisherFK { get; set; }
 
         /// <summary>
