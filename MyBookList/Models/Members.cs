@@ -19,6 +19,7 @@ namespace MyBookList.Models
         /// Username de um Utilizador
         /// </summary>
         [Required(ErrorMessage = "O {0} é de preenchimento obrigatório")]
+        [MaxLength(20)]
         public string Username { get; set; }
 
         /// <summary>

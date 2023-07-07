@@ -29,6 +29,7 @@ namespace MyBookList.Models
         /// Título do Livro
         /// </summary>
         [Required(ErrorMessage = "O {0} é de preenchimento obrigatório")]
+        [MaxLength(30)]
         public string Title { get; set; }
 
         /// <summary>
@@ -58,6 +59,7 @@ namespace MyBookList.Models
         /// FK da editora do Livro
         /// </summary>
         [ForeignKey(nameof(Publisher))]
+        [Display(Name = "Editora")]
         [AllowNull]
         public int PublisherFK { get; set; }
 
