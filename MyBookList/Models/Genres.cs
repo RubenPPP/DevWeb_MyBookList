@@ -16,6 +16,7 @@ namespace MyBookList.Models
         /// </summary>
         [Required(ErrorMessage = "O {0} é de preenchimento obrigatório")]
         [Display(Name = "Género")]
+        [StringLength(50)]
         public string Genre { get; set; }
 
         /// <summary>

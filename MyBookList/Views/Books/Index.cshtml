@@ -10,75 +10,34 @@
     <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <!--
-            <th>
-            @*@Html.DisplayNameFor(model => model.Score)*@
-            </th>
-            -->
-            <th>
-                @Html.DisplayNameFor(model => model.GenresList)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AuthorsList)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Publisher)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
+    <div class="container" style="margin: 2.5%;">
+        @if (Model.Any())
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <!--
-                <td>
-                @* @Html.DisplayFor(modelItem => item.Score) *@
-                </td>
-                -->
-                <td>
-                    @foreach (var genre in item.GenresList)
+            @for (int i = 0; i < Model.Count(); i += 4)
+            {
+                var booksInRow = Model.Skip(i).Take(4);
+                <div class="row g-4" style="margin: 2.5% 0">
+                    @foreach (var book in booksInRow)
                     {
-                        <span>@genre.Genre</span>
-                        if (genre != item.GenresList.Last())
-                        {
-                            <span>, </span>
-                        }
+                        <div class="col-md-3">
+                            <a asp-action="Details" asp-route-id="@book.Id" style="color: white; text-decoration: none;">
+                                <div class="card" style="background-color: #262a2b; min-height: 400px;">
+                                    <div class="card-body">
+                                        <h5 class="card-title">@book.Title</h5>
+                                        <p class="card-text" style="max-height: 100px; min-height: 100px; text-overflow: ellipsis; font-size: 12px; overflow: hidden;">
+                                            @book.Description
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
                     }
-                </td>
-                <td>
-                    @foreach (var author in item.AuthorsList)
-                    {
-                        <span>@author.Name</span>
-                        if (author != item.AuthorsList.Last())
-                        {
-                            <span>, </span>
-                        }
-                    }
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Publisher.Name)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
+                </div>
+            }
         }
-    </tbody>
+        else
+        {
+            <p>Sem livros.</p>
+        }
+    </div>
 </table>

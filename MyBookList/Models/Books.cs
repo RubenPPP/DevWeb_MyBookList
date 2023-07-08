@@ -23,13 +23,14 @@ namespace MyBookList.Models
         /// Identificador único de um Livro
         /// </summary>
         [Required(ErrorMessage = "O {0} é de preenchimento obrigatório")]
+        [StringLength(13)]
         public string ISBN { get; set; }
 
         /// <summary>
         /// Título do Livro
         /// </summary>
         [Required(ErrorMessage = "O {0} é de preenchimento obrigatório")]
-        [MaxLength(30)]
+        [MaxLength(50)]
         [Display(Name = "Título")]
         public string Title { get; set; }
 
@@ -37,6 +38,7 @@ namespace MyBookList.Models
         /// Descrição do Livro
         /// </summary>
         [Display(Name = "Descrição")]
+        [StringLength(3000)]
         public string Description { get; set; }
 
         /// <summary>

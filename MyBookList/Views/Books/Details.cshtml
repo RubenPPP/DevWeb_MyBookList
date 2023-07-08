@@ -6,71 +6,68 @@
 
 <h1>Details</h1>
 
-<div>
-    <h4>Books</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ISBN)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ISBN)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <!--
-        <dt class = "col-sm-2">
-        @*@Html.DisplayNameFor(model => model.Score)*@
-        </dt>
-        <dd class = "col-sm-10">
-        @*@Html.DisplayFor(model => model.Score)*@
-        </dd>
-        -->
-        <dt class="col-sm-10">
-            @Html.DisplayNameFor(model => model.GenresList)
-        </dt>
-        <dd class="col-sm-10">
-            @foreach (var genre in Model.GenresList)
-            {
-                <span>@genre.Genre</span>
-                if (genre != Model.GenresList.Last())
-                {
-                    <span>, </span>
-                }
-            }
-        </dd>
-        <dt class="col-sm-10">
-            @Html.DisplayNameFor(model => model.AuthorsList)
-        </dt>
-        <dd class="col-sm-10">
-            @foreach (var author in Model.AuthorsList)
-            {
-                <span>@author.Name</span>
-                if (author != Model.AuthorsList.Last())
-                {
-                    <span>, </span>
-                }
-            }
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Publisher)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Publisher.Name)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div style="color: white;">
+    <div class="row" style="margin: 2.5%;">
+        <div class="col-xs-6 col-md-4">
+            <div class="card" style="background-color: #262a2b;">
+                <!--<img class="card-img-top" src="testImage" alt="Card image" />-->
+                <div class="card-body">
+                    <h3 class="card-title" style="text-align:center;">@Html.DisplayFor(model => model.Title)</h3>
+                    <div class="card-body">
+                        <h5 class="card-title">Géneros</h5>
+                        @if(Model.GenresList != null)
+                            @foreach (var genre in Model.GenresList)
+                            {
+                                <a asp-controller="Genres" asp-action="Details" asp-route-id="@genre.Id">@genre.Genre</a>
+                                if (genre != Model.GenresList.Last())
+                                {
+                                    <span>, </span>
+                                }
+                            }
+                        else
+                        {
+                            <p>Sem Géneros</p>
+                        }
+                        <h5 class="card-title">Autor(es)</h5>
+                        @if (Model.AuthorsList != null)
+                            @foreach (var author in Model.AuthorsList)
+                            {
+                                <a asp-controller="Authors" asp-action="Details" asp-route-id="@author.Id">@author.Name</a>
+                                if (author != Model.AuthorsList.Last())
+                                {
+                                    <span>, </span>
+                                }
+                            }
+                        else
+                        {
+                            <p>Sem Autor(es)</p>
+                        }
+                        <h5 class="card-title">Editora</h5>
+                        @if (Model.PublisherFK != null)
+                        {
+                            <a asp-controller="Publishers" asp-action="Details" asp-route-id="@Model?.PublisherFK">@Html.DisplayFor(model => model.Publisher.Name)</a>
+                        }
+                        else
+                        {
+                            <p>Sem Editora</p>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center">
+                <a type="button" class="btn btn-outline-primary btn-sm" asp-action="Edit" asp-route-id="@Model?.Id">Editar</a>
+                <a type="button" class="btn btn-outline-primary btn-sm" asp-action="Delete" asp-route-id="@Model?.Id">Apagar</a>
+                <a type="button" class="btn btn-outline-primary btn-sm" asp-action="Index">Voltar</a>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-md-8">
+            <div class="card" style="height: 100%; background-color: #262a2b;">
+                <div class="card-body">
+                    <h5 class="card-title">Biografia</h5>
+                    <p class="card-text">@Html.DisplayFor(model => model.Description)</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

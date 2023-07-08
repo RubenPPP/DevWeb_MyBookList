@@ -30,6 +30,7 @@ namespace MyBookList.Models
         /// </summary>
         [AllowNull]
         [Display(Name = "Biografia")]
+        [StringLength(2000)]
         public string Biography { get; set; }
 
         /// <summary>

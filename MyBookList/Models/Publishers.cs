@@ -20,6 +20,7 @@ namespace MyBookList.Models
         /// </summary>
         [Required(ErrorMessage = "O {0} é de preenchimento obrigatório")]
         [Display(Name = "Nome")]
+        [StringLength(50)]
         public string Name { get; set; }
 
         /// <summary>
@@ -27,6 +28,7 @@ namespace MyBookList.Models
         /// </summary>
         [AllowNull]
         [Display(Name = "Descrição")]
+        [StringLength(2000)]
         public string Description { get; set; }
 
         /// <summary>
