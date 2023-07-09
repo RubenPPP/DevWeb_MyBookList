@@ -9,11 +9,11 @@ using MyBookList.Data;
 
 #nullable disable
 
-namespace MyBookList.Data.Migrations
+namespace MyBookList.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230707183428_NewData")]
-    partial class NewData
+    [Migration("20230709221035_countryDelete")]
+    partial class countryDelete
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -401,8 +401,10 @@ namespace MyBookList.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Country")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.Property<string>("Status")
                         .IsRequired()

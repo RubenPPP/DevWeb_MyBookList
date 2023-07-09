@@ -4,8 +4,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
@@ -19,6 +21,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+
 using MyBookList.Data;
 using MyBookList.Models;
 
@@ -49,6 +52,7 @@ namespace MyBookList.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _context = context;
 
         }
 
@@ -124,6 +128,8 @@ namespace MyBookList.Areas.Identity.Pages.Account
             //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
+                Console.WriteLine("1 if");
+
                 var user = CreateUser();
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
@@ -132,6 +138,7 @@ namespace MyBookList.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    Console.WriteLine("2 if");
                     _logger.LogInformation("User created a new account with password.");
 
                     //****************************************************************************************
@@ -147,9 +154,8 @@ namespace MyBookList.Areas.Identity.Pages.Account
                     }
                     catch (Exception)
                     {
-                        // não esquecer tratar da exceção
-                        // por exemplo, apagar o USER, se não se consegue 
-                        //    criar o CRIADOR
+                        Console.WriteLine("Register error");
+                        user = null;
                         throw;
                     }
 
@@ -169,6 +175,7 @@ namespace MyBookList.Areas.Identity.Pages.Account
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
+                        Console.WriteLine("3 if");
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
                     }
                     else
@@ -184,6 +191,7 @@ namespace MyBookList.Areas.Identity.Pages.Account
             }
 
             // If we got this far, something failed, redisplay form
+            Console.WriteLine("refresh");
             return Page();
         }
 

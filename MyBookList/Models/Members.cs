@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
 namespace MyBookList.Models
@@ -13,7 +14,6 @@ namespace MyBookList.Models
         /// <summary>
         /// PK para a tabela Users
         /// </summary>
-        [Key]
         public int Id { get; set; }
 
         /// <summary>
@@ -27,16 +27,9 @@ namespace MyBookList.Models
         /// <summary>
         /// Estado de privilégios de um Utilizador (Utilizador, Ajudante, Administrador, ...)
         /// </summary>
-        [Required(ErrorMessage = "O {0} é de preenchimento obrigatório")]
+        [DefaultValue("user")]
         [Display(Name = "Estado do Usuário")]
         public string Status { get; set; }
-
-        /// <summary>
-        /// País de um Utilizador
-        /// </summary>
-        [AllowNull]
-        [Display(Name = "País")]
-        public string? Country { get; set; }
 
         /// <summary>
         /// Data de Nascimento de um Utilizador

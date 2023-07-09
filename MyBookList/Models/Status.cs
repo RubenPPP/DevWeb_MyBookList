@@ -11,6 +11,8 @@ namespace MyBookList.Models
         [Key, Column(Order = 0)]
         [Required, ForeignKey(nameof(Member))]
         public int MemberFK { get; set; }
+
+
         [Display(Name = "Usuário")]
         public Members Member { get; set; }
 

@@ -9,11 +9,11 @@ using MyBookList.Data;
 
 #nullable disable
 
-namespace MyBookList.Data.Migrations
+namespace MyBookList.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230707202810_MemberEmail")]
-    partial class MemberEmail
+    [Migration("20230709220128_resetMigration")]
+    partial class resetMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
