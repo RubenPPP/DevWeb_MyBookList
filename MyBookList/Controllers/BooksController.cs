@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MyBookList.Data;
 using MyBookList.Models;
+using NuGet.Packaging;
+using NuGet.Protocol;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace MyBookList.Controllers
 {
@@ -109,28 +112,114 @@ namespace MyBookList.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ISBN,Title,Description,GenresList,AuthorsList,PublisherFK")] Books books, int[] GenresList, int[] AuthorsList)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ISBN,Title,Description,PublisherFK")] Books book, int[] GenresList, int[] AuthorsList)
         {
-            if (id != books.Id)
+            if (id != book.Id)
             {
                 return NotFound();
+            }
+
+            //
+            //  GÉNERO
+            //
+            // Dados dos Géneros anteriormente guardados
+            var existingBook = await _context.Books
+                                       .Where(b => b.Id == id)
+                                       .Include(b => b.GenresList)
+                                       .FirstOrDefaultAsync();
+
+            // Obter a lista dos IDs dos géneros associadas aos livros, antes da edição
+            var oldGenresList = existingBook.GenresList
+                                           .Select(g => g.Id)
+                                           .ToList();
+
+            // Avaliar se o utilizador alterou alguma Category associada à Lesson
+            // adicionadas -> lista de categorias adicionadas
+            // retiradas   -> lista de categorias retiradas
+            var adicionadas = GenresList.Except(oldGenresList);
+            var retiradas = oldGenresList.Except(GenresList.ToList());
+
+            // Se alguma Category foi adicionada ou retirada
+            // é necessário alterar a lista de categorias 
+            // Associada ao género
+            if (adicionadas.Any() || retiradas.Any())
+            {
+
+                if (retiradas.Any())
+                {
+                    // retirar a Category 
+                    foreach (int oldGenre in retiradas)
+                    {
+                        var genreToRemove = existingBook.GenresList.FirstOrDefault(g => g.Id == oldGenre);
+                        existingBook.GenresList.Remove(genreToRemove);
+                    }
+                }
+                if (adicionadas.Any())
+                {
+                    // adicionar a Category 
+                    foreach (int newGenre in adicionadas)
+                    {
+                        var genreToAdd = await _context.Genres.FirstOrDefaultAsync(g => g.Id == newGenre);
+                        existingBook.GenresList.Add(genreToAdd);
+                    }
+                }
+            }
+
+            //  AUTOR
+            // Dados dos Géneros anteriormente guardados
+            existingBook = await _context.Books
+                                       .Where(b => b.Id == id)
+                                       .Include(b => b.AuthorsList)
+                                       .FirstOrDefaultAsync();
+
+            // Obter a lista dos IDs dos géneros associadas aos livros, antes da edição
+            var oldAuthorsList = existingBook.AuthorsList
+                                           .Select(a => a.Id)
+                                           .ToList();
+
+            // Avaliar se o utilizador alterou alguma Category associada à Lesson
+            // adicionadas -> lista de categorias adicionadas
+            // retiradas   -> lista de categorias retiradas
+            adicionadas = AuthorsList.Except(oldAuthorsList);
+            retiradas = oldAuthorsList.Except(AuthorsList.ToList());
+
+            // Se alguma Category foi adicionada ou retirada
+            // é necessário alterar a lista de categorias 
+            // Associada ao género
+            if (adicionadas.Any() || retiradas.Any())
+            {
+
+                if (retiradas.Any())
+                {
+                    // retirar a Category 
+                    foreach (int oldAuthor in retiradas)
+                    {
+                        var authorToRemove = existingBook.AuthorsList.FirstOrDefault(a => a.Id == oldAuthor);
+                        existingBook.AuthorsList.Remove(authorToRemove);
+                    }
+                }
+                if (adicionadas.Any())
+                {
+                    // adicionar a Category 
+                    foreach (int newAuthor in adicionadas)
+                    {
+                        var authorToAdd = await _context.Authors.FirstOrDefaultAsync(a => a.Id == newAuthor);
+                        existingBook.AuthorsList.Add(authorToAdd);
+                    }
+                }
             }
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    // Set the selected genres, authors and publisher for the book
-                    books.GenresList = await _context.Genres.Where(g => GenresList.Contains(g.Id)).ToListAsync();
-                    books.AuthorsList = await _context.Authors.Where(a => AuthorsList.Contains(a.Id)).ToListAsync();
-                    books.Publisher = await _context.Publishers.FindAsync(books.PublisherFK);
-
-                    _context.Update(books);
+                    existingBook.Publisher = await _context.Publishers.FindAsync(book.PublisherFK);
+                    _context.Update(existingBook);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BooksExists(books.Id))
+                    if (!BooksExists(book.Id))
                     {
                         return NotFound();
                     }
@@ -141,10 +230,10 @@ namespace MyBookList.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PublisherFK"] = new SelectList(_context.Publishers, "Id", "Name", books.PublisherFK);
-            ViewData["AuthorsList"] = new SelectList(_context.Authors, "Id", "Name", books.AuthorsList);
-            ViewData["PublisherFK"] = new SelectList(_context.Publishers, "Id", "Name", books.PublisherFK);
-            return View(books);
+            ViewData["GenresList"] = GenresList;
+            ViewData["AuthorsList"] = AuthorsList;
+            ViewData["PublisherFK"] = new SelectList(_context.Publishers, "Id", "Name", book.PublisherFK);
+            return View(book);
         }
 
         // GET: Books/Delete/5
