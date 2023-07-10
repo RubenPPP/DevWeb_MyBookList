@@ -24,12 +24,6 @@ namespace MyBookList.Models
         [Display(Name = "Nome do Usuário")]
         public string Username { get; set; }
 
-        /// <summary>
-        /// Estado de privilégios de um Utilizador (Utilizador, Ajudante, Administrador, ...)
-        /// </summary>
-        [DefaultValue("user")]
-        [Display(Name = "Estado do Usuário")]
-        public string Status { get; set; }
 
         /// <summary>
         /// Data de Nascimento de um Utilizador
