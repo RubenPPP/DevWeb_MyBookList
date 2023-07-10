@@ -4,11 +4,12 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
+<p style="text-align:right; margin:2.5% 0;">
+    <a asp-action="Create" style="text-decoration:none;">Adicionar Editora</a>
 </p>
+
+<hr />
+
 <table class="table">
     <div class="container" style="margin: 2.5%;">
         @if (Model.Any())
