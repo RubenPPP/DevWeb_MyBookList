@@ -9,11 +9,11 @@ using MyBookList.Data;
 
 #nullable disable
 
-namespace MyBookList.Data.Migrations
+namespace MyBookList.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230707183428_NewData")]
-    partial class NewData
+    [Migration("20230709231007_neededchanges")]
+    partial class neededchanges
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -265,7 +265,6 @@ namespace MyBookList.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Biography")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -307,7 +306,6 @@ namespace MyBookList.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ISBN")
@@ -401,15 +399,15 @@ namespace MyBookList.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Country")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
@@ -431,7 +429,6 @@ namespace MyBookList.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -480,11 +477,9 @@ namespace MyBookList.Data.Migrations
                         .HasColumnOrder(1);
 
                     b.Property<string>("Review")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReviewDate")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("ScoreRating")
