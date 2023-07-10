@@ -17,17 +17,17 @@
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="ISBN" class="control-label"></label>
-                <input asp-for="ISBN" class="form-control" />
+                <input asp-for="ISBN" class="form-control" style="background-color:#262a2b; color:white;" />
                 <span asp-validation-for="ISBN" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
+                <input asp-for="Title" class="form-control" style="background-color:#262a2b; color:white;" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+                <input asp-for="Description" class="form-control" style="background-color:#262a2b; color:white;" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <!--
@@ -39,19 +39,19 @@
             -->
             <div class="form-group">
                 <label asp-for="GenresList" class="control-label"></label>
-                <select asp-for="GenresList" name="GenresList" class="form-control" asp-items="ViewBag.GenresList" multiple>
+                <select asp-for="GenresList" name="GenresList" class="form-control" asp-items="ViewBag.GenresList" multiple style="background-color:#262a2b; color:white;">
                     <option value="0">Sem Géneros</option>
                 </select>
             </div>
             <div class="form-group">
                 <label asp-for="AuthorsList" class="control-label"></label>
-                <select asp-for="AuthorsList" name="AuthorsList" class="form-control" asp-items="ViewBag.AuthorsList" multiple>
+                <select asp-for="AuthorsList" name="AuthorsList" class="form-control" asp-items="ViewBag.AuthorsList" multiple style="background-color:#262a2b; color:white;">
                     <option value="0">Sem Autor(es)</option>
                 </select>
             </div>
             <div class="form-group">
                 <label asp-for="PublisherFK" class="control-label"></label>
-                <select asp-for="PublisherFK" name="PublisherFK" class="form-control" asp-items="ViewBag.PublisherFK">
+                <select asp-for="PublisherFK" name="PublisherFK" class="form-control" asp-items="ViewBag.PublisherFK" style="background-color:#262a2b; color:white;">
                     <option value="0">Sem Editora</option>
                 </select>
                 <span asp-validation-for="PublisherFK" class="text-danger"></span>

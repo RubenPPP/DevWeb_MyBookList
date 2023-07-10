@@ -4,33 +4,35 @@
     ViewData["Title"] = "Delete";
 }
 
-<div class="d-flex justify-content-between" style="margin: 2.5% 5% 1%;">
-    <a type="button" style="width:100px; text-align:center;" class="btn btn-outline-primary btn-sm" asp-action="Index">Voltar</a>
-</div>
+<div style="background-color:#181a1b; height:100vh; overflow:auto;">
+    <div class="d-flex justify-content-between" style="margin: 2.5% 5% 1%;">
+        <a type="button" style="width:100px; text-align:center;" class="btn btn-outline-primary btn-sm" asp-action="Index">Voltar</a>
+    </div>
 
-<hr />
-
-<h3>Tem a certaza que quer apagar este Autor?</h3>
-<div>
-    <h4>Authors</h4>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Biography)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Biography)
-        </dd>
-    </dl>
+
+    <h3>Tem a certaza que quer apagar este Autor?</h3>
+    <div>
+        <h4>Authors</h4>
+        <hr />
+        <dl class="row">
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Biography)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Biography)
+            </dd>
+        </dl>
     
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" />
-    </form>
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Delete" class="btn btn-danger" />
+        </form>
+    </div>
 </div>

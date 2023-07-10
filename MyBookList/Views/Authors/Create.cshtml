@@ -3,34 +3,34 @@
 @{
     ViewData["Title"] = "Create";
 }
+<div style="background-color:#181a1b; height:100vh; overflow:auto;">
+    <div class="d-flex justify-content-between" style="margin: 2.5% 5% 1%;">
+        <a type="button" style="width:100px; text-align:center;" class="btn btn-outline-primary btn-sm" asp-action="Index">Voltar</a>
+    </div>
 
-<div class="d-flex justify-content-between" style="margin: 2.5% 5% 1%;">
-    <a type="button" style="width:100px; text-align:center;" class="btn btn-outline-primary btn-sm" asp-action="Index">Voltar</a>
-</div>
+    <hr />
 
-<hr />
-
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Biography" class="control-label"></label>
-                <input asp-for="Biography" class="form-control" />
-                <span asp-validation-for="Biography" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Criar Autor" class="btn btn-primary" />
-            </div>
-        </form>
+    <div class="row" style="background-color:#181a1b;">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" style="background-color:#262a2b; color:white;" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Biography" class="control-label"></label>
+                    <input asp-for="Biography" class="form-control" style="background-color:#262a2b; color:white;" />
+                    <span asp-validation-for="Biography" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Criar Autor" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
     </div>
 </div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
