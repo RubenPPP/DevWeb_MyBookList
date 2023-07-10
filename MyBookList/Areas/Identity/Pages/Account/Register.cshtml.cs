@@ -145,7 +145,8 @@ namespace MyBookList.Areas.Identity.Pages.Account
 
                     Input.Member.Email = Input.Email;
                     Input.Member.UserId = user.Id;
-                    Input.Member.Status = "user";
+                    await _userManager.AddToRoleAsync(user, "User");
+                    
 
 
                     try
