@@ -44,7 +44,7 @@
                     <h3 class="card-title" style="text-align:center;">@Html.DisplayFor(model => model.Title)</h3>
                     <div class="card-body">
                         <h5 class="card-title">Géneros</h5>
-                        @if(Model.GenresList != null)
+                        @if (Model.GenresList != null && Model.GenresList.Any())
                             @foreach (var genre in Model.GenresList)
                             {
                                 <a asp-controller="Genres" asp-action="Details" asp-route-id="@genre.Id">@genre.Genre</a>
@@ -58,7 +58,7 @@
                             <p>Sem Géneros</p>
                         }
                         <h5 class="card-title">Autor(es)</h5>
-                        @if (Model.AuthorsList != null)
+                        @if (Model.AuthorsList != null && Model.AuthorsList.Any())
                             @foreach (var author in Model.AuthorsList)
                             {
                                 <a asp-controller="Authors" asp-action="Details" asp-route-id="@author.Id">@author.Name</a>

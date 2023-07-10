@@ -145,10 +145,23 @@ namespace MyBookList.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Authors'  is null.");
             }
-            var authors = await _context.Authors.FindAsync(id);
-            if (authors != null)
+
+            var author = await _context.Authors.Include(p => p.BookList).FirstOrDefaultAsync(p => p.Id == id);
+
+            if (author == null)
             {
-                _context.Authors.Remove(authors);
+                return NotFound();
+            }
+
+            // Remove the association from the books
+            foreach (var book in author.BookList)
+            {
+                book.AuthorsList.Remove(author);
+            }
+
+            if (author != null)
+            {
+                _context.Authors.Remove(author);
             }
             
             await _context.SaveChangesAsync();

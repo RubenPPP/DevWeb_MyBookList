@@ -145,12 +145,21 @@ namespace MyBookList.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Publishers'  is null.");
             }
-            var publishers = await _context.Publishers.FindAsync(id);
-            if (publishers != null)
+
+            var publisher = await _context.Publishers.Include(p => p.BookList).FirstOrDefaultAsync(p => p.Id == id);
+
+            if (publisher == null)
             {
-                _context.Publishers.Remove(publishers);
+                return NotFound();
             }
-            
+
+            // Remove the association from the books
+            foreach (var book in publisher.BookList)
+            {
+                book.Publisher = null;
+            }
+
+            _context.Publishers.Remove(publisher);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

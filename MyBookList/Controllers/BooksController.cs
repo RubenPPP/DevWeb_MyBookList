@@ -67,25 +67,31 @@ namespace MyBookList.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ISBN,Title,Description,GenresList,AuthorsList,PublisherFK")] Books books, int[] GenresList, int[] AuthorsList)
+        public async Task<IActionResult> Create([Bind("Id,ISBN,Title,Description,GenresList,AuthorsList,PublisherFK")] Books book, int[] GenresList, int[] AuthorsList)
         {
             if (ModelState.IsValid)
             {
                 // Set the selected genres, authors and publisher for the book
-                books.GenresList = await _context.Genres.Where(g => GenresList.Contains(g.Id)).ToListAsync();
-                books.AuthorsList = await _context.Authors.Where(a => AuthorsList.Contains(a.Id)).ToListAsync();
-                books.Publisher = await _context.Publishers.FindAsync(books.PublisherFK);
+                book.GenresList = await _context.Genres.Where(g => GenresList.Contains(g.Id)).ToListAsync();
+                book.AuthorsList = await _context.Authors.Where(a => AuthorsList.Contains(a.Id)).ToListAsync();
+                if (book.PublisherFK != 0)
+                    book.Publisher = await _context.Publishers.FindAsync(book.PublisherFK);
+                else
+                {
+                    book.Publisher = null;
+                    book.PublisherFK = null;
+                }
                 // Nulls the status list as it's a new book
-                books.StatusList = null;
+                book.StatusList = null;
 
-                _context.Add(books);
+                _context.Add(book);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["GenresList"] = new SelectList(_context.Genres, "Id", "Genre");
-            ViewData["AuthorsList"] = new SelectList(_context.Authors, "Id", "Name", books.AuthorsList);
-            ViewData["PublisherFK"] = new SelectList(_context.Publishers, "Id", "Name", books.PublisherFK);
-            return View(books);
+            ViewData["AuthorsList"] = new SelectList(_context.Authors, "Id", "Name", book.AuthorsList);
+            ViewData["PublisherFK"] = new SelectList(_context.Publishers, "Id", "Name", book.PublisherFK);
+            return View(book);
         }
 
         // GET: Books/Edit/5
@@ -190,8 +196,7 @@ namespace MyBookList.Controllers
             {
 
                 if (retiradas.Any())
-                {
-                    // retirar a Category 
+                { 
                     foreach (int oldAuthor in retiradas)
                     {
                         var authorToRemove = existingBook.AuthorsList.FirstOrDefault(a => a.Id == oldAuthor);
@@ -200,7 +205,6 @@ namespace MyBookList.Controllers
                 }
                 if (adicionadas.Any())
                 {
-                    // adicionar a Category 
                     foreach (int newAuthor in adicionadas)
                     {
                         var authorToAdd = await _context.Authors.FirstOrDefaultAsync(a => a.Id == newAuthor);
@@ -213,7 +217,17 @@ namespace MyBookList.Controllers
             {
                 try
                 {
-                    existingBook.Publisher = await _context.Publishers.FindAsync(book.PublisherFK);
+                    if (book.PublisherFK != 0)
+                        existingBook.Publisher = await _context.Publishers.FindAsync(book.PublisherFK);
+                    else
+                    {
+                        existingBook.Publisher = null;
+                        existingBook.PublisherFK = null;
+                    }
+                    if (AuthorsList.Contains(0))
+                        existingBook.AuthorsList = null;
+                    if (GenresList.Contains(0))
+                        existingBook.GenresList = null;
                     _context.Update(existingBook);
                     await _context.SaveChangesAsync();
                 }
