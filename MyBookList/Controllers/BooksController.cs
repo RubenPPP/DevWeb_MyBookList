@@ -133,6 +133,8 @@ namespace MyBookList.Controllers
                 return NotFound();
             }
 
+            // SOURCE : https://github.com/jcnpereira/bd-Muitos-Para-Muitos-ASP.NetCore/
+            // Nota : Obrigado.
             //
             //  GÉNERO
             //
