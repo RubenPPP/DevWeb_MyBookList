@@ -167,12 +167,16 @@ else
                             <label>Estado</label>
                             <select name="selectedStatus" style="background-color:#262a2b; color:white;">
                                 <option value="0">A Ler</option>
-                                <option value="1">Planeio Ler</option>
-                                <option value="2">Desisti de Ler</option>
+                                <option value="1">Já Li</option>
+                                <option value="2">Planeio Ler</option>
+                                <option value="3">Desisti de Ler</option>
                             </select>
+                            <br/>
+                            <label>Crítica/Observação</label>
+                            <input name="critica" class="form-control" style="background-color:#262a2b; color:white;" />
                             <input type="hidden" name="bookId" value="@Model.Id" />
                             <div class="modal-footer">
-                                <button id="hideAddBookButton" class="btn btn-secondary">Não</button>
+                                <button id="hideAddBookButton" class="btn btn-secondary">Cancelar</button>
                                 <input type="submit" value="Adicionar Livro" class="btn btn-outline-primary btn-sm" />
                             </div>
                         </form>

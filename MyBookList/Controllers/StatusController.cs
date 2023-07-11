@@ -79,7 +79,7 @@ namespace MyBookList.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(int bookId, int selectedStatus)
+        public async Task<IActionResult> Create(int bookId, int selectedStatus, string critica)
         {
             var book = await _context.Books.FindAsync(bookId);
             var user = await _userManager.GetUserAsync(User); // Retrieve the currently logged-in user
@@ -94,7 +94,8 @@ namespace MyBookList.Controllers
                     Book = book,
                     MemberFK = member.Id,
                     Member = member,
-                    State = selectedStatus == 0 ? "A Ler" : selectedStatus == 1 ? "Planeia Ler" : "Desistiu",
+                    State = selectedStatus == 0 ? "A Ler" : selectedStatus == 1 ? "Leu" : selectedStatus == 2 ? "Planeia Ler" : "Desistiu",
+                    Review = critica,
                     ReviewDate = DateTime.Now.ToString(),
                 };
 

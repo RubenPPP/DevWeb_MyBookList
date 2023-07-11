@@ -23,6 +23,9 @@
                     Descrição
                 </th>
                 <th>
+                    Crítica/Observação
+                </th>
+                <th>
                     Data de Edição do Usuário
                 </th>
             </tr>
@@ -39,6 +42,9 @@
                         @status.Book.Description
                     </td>
                     <td>
+                        @status.Review
+                    </td>
+                    <td>
                         @status.ReviewDate
                     </td>
                 </tr>
@@ -49,6 +55,50 @@
 
     <br style="margin:10% 0;"/>
 
+    <h4 style="color: #5eb0d6;">Leu</h4>
+    <table class="table" style="color:white;">
+        <thead>
+            <tr style="color:#5eb0d6;">
+                <th>
+                    Livro
+                </th>
+                <th>
+                    Descrição
+                </th>
+                <th>
+                    Crítica/Observação
+                </th>
+                <th>
+                    Data de Edição do Usuário
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var status in Model)
+            {
+                @if (status.State == "Leu")
+                {
+                    <tr>
+                        <td>
+                            @status.Book.Title
+                        </td>
+                        <td>
+                            @status.Book.Description
+                        </td>
+                        <td>
+                            @status.Review
+                        </td>
+                        <td>
+                            @status.ReviewDate
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+    <br style="margin:10% 0;" />
+
     <h4 style="color: #5eb0d6;">Planeia Ler</h4>
     <table class="table" style="color:white;">
         <thead>
@@ -58,6 +108,9 @@
                 </th>
                 <th>
                     Descrição
+                </th>
+                <th>
+                    Crítica/Observação
                 </th>
                 <th>
                     Data de Edição do Usuário
@@ -75,6 +128,9 @@
                         </td>
                         <td>
                             @status.Book.Description
+                        </td>
+                        <td>
+                            @status.Review
                         </td>
                         <td>
                             @status.ReviewDate
@@ -98,6 +154,9 @@
                     Descrição
                 </th>
                 <th>
+                    Crítica/Observação
+                </th>
+                <th>
                     Data de Edição do Usuário
                 </th>
             </tr>
@@ -113,6 +172,9 @@
                         </td>
                         <td>
                             @status.Book.Description
+                        </td>
+                        <td>
+                            @status.Review
                         </td>
                         <td>
                             @status.ReviewDate
