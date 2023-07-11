@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using MyBookList.Data;
 using MyBookList.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace MyBookList.Controllers
 {
@@ -24,9 +25,15 @@ namespace MyBookList.Controllers
         // GET: Members
         public async Task<IActionResult> Index()
         {
-              return _context.Members != null ? 
-                          View(await _context.Members.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Members'  is null.");
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var member = await _context.Members.FirstOrDefaultAsync(m => m.UserId == userId);
+
+            if (member != null)
+            {
+                return View(member);
+            }
+
+            return Problem("Member não encontrado.");
         }
 
         // GET: Members/Details/5

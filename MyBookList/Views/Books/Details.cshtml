@@ -8,20 +8,20 @@
 {
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-        const showDeleteButton = document.getElementById('showDeleteButton');
-        const hideDeleteButton = document.getElementById('hideDeleteButton');
-        const deleteModal = document.getElementById('deleteModal');
+            const showDeleteButton = document.getElementById('showDeleteButton');
+            const hideDeleteButton = document.getElementById('hideDeleteButton');
+            const deleteModal = document.getElementById('deleteModal');
 
-        function showDeleteModal() {
-        deleteModal.style.display = 'block';
-        }
+            function showDeleteModal() {
+            deleteModal.style.display = 'block';
+            }
 
-        function hideDeleteModal() {
-        deleteModal.style.display = 'none';
-        }
+            function hideDeleteModal() {
+            deleteModal.style.display = 'none';
+            }
 
-        showDeleteButton.addEventListener('click', showDeleteModal);
-        hideDeleteButton.addEventListener('click', hideDeleteModal);
+            showDeleteButton.addEventListener('click', showDeleteModal);
+            hideDeleteButton.addEventListener('click', hideDeleteModal);
         });
     </script>
 
@@ -32,6 +32,36 @@
         <div>
             <a type="button" style="width:100px; text-align:center;" class="btn btn-outline-primary btn-sm" asp-action="Edit" asp-route-id="@Model?.Id">Editar</a>
             <button id="showDeleteButton" style="width:100px; text-align:center;" class="btn btn-outline-primary btn-sm">Apagar</button>
+        </div>
+    </div>
+}
+else if (User.Identity.IsAuthenticated)
+{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const showAddBookButton = document.getElementById('showAddBookButton');
+            const hideAddBookButton = document.getElementById('hideAddBookButton');
+            const deleteModal = document.getElementById('deleteModal');
+
+            function showAddBookModal() {
+                addBookModal.style.display = 'block';
+            }
+
+            function hideAddBookModal() {
+                addBookModal.style.display = 'none';
+            }
+
+            showAddBookButton.addEventListener('click', showAddBookModal);
+            hideAddBookButton.addEventListener('click', hideAddBookModal);
+        });
+    </script>
+
+    <div class="d-flex justify-content-between" style="margin: 2.5% 5% 1%;">
+        <div>
+            <a type="button" style="width:100px; text-align:center;" class="btn btn-outline-primary btn-sm" asp-action="Index">Voltar</a>
+        </div>
+        <div>
+            <button id="showAddBookButton" style="width:200px; text-align:center;" class="btn btn-outline-primary btn-sm">Adicionar Livro</button>
         </div>
     </div>
 }
@@ -124,4 +154,31 @@ else
         </div>
     </div>
 </div>
+}
+@if (User.Identity.IsAuthenticated)
+{
+    <div id="addBookModal" class="modal" style="display:none;">
+        <div class="modal-dialog">
+            <div class="modal-content" style="background-color:#181a1b;">
+                <div class="modal-body">
+                    <div class="mb-3" id="exampleForm.ControlInput1">
+                        <label>Adicionar Livro</label>
+                        <form asp-controller="Status" asp-action="Create" method="post">
+                            <label>Estado</label>
+                            <select name="selectedStatus" style="background-color:#262a2b; color:white;">
+                                <option value="0">A Ler</option>
+                                <option value="1">Planeio Ler</option>
+                                <option value="2">Desisti de Ler</option>
+                            </select>
+                            <input type="hidden" name="bookId" value="@Model.Id" />
+                            <div class="modal-footer">
+                                <button id="hideAddBookButton" class="btn btn-secondary">Não</button>
+                                <input type="submit" value="Adicionar Livro" class="btn btn-outline-primary btn-sm" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 }

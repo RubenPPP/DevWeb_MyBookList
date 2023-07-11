@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MyBookList.Models.Members>
+﻿@model MyBookList.Models.Members
 
 @{
     ViewData["Title"] = "Index";
@@ -6,31 +6,35 @@
 
 @if(User.Identity.IsAuthenticated)
 {
-<h1>Index</h1>
+<h2>A minha Lista</h2>
 
-<table class="table">
+<hr/>
+
+<h5>A Ler</h5>
+<table class="table" style="color:white;">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Username)
+                Livro
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UserId)
+                Descrição
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+
+    @foreach (var book in Model.StatusList){
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Username)
+                @book.Book.Title;
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UserId)
+                @book.Book.Description;
             </td>
         </tr>
-}
+    }
+
     </tbody>
 </table>
 }

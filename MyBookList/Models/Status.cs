@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace MyBookList.Models
 {
@@ -35,14 +36,15 @@ namespace MyBookList.Models
         /// <summary>
         /// Classificação dada pelo utilizador ao livro (0-10)
         /// </summary>
-        [Display(Name = "Classificação")]
-        public decimal ScoreRating { get; set; }
+        //[Display(Name = "Classificação")]
+        //public decimal ScoreRating { get; set; }
 
         /// <summary>
         /// Crítica dada pelo utilizador ao livro
         /// </summary>
         [Display(Name = "Crítica")]
-        public string Review { get; set; }
+        [AllowNull]
+        public string? Review { get; set; }
 
         /// <summary>
         /// Data da crítica dada pelo utiliador ao livro

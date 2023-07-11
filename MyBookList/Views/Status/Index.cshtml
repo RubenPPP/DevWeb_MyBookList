@@ -4,64 +4,124 @@
     ViewData["Title"] = "Index";
 }
 
-@if (User.IsInRole("Admin"))
+@if (User.Identity.IsAuthenticated)
 {
-<h1>Index</h1>
+    <br/>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Member)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Book)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.State)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ScoreRating)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Review)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ReviewDate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Book.ISBN)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.State)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ScoreRating)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Review)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReviewDate)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <h2>A minha Lista</h2>
+
+    <br style="margin:5% 0;" />
+
+    <h4 style="color: #5eb0d6;">A Ler</h4>
+    <table class="table" style="color:white;">
+        <thead>
+            <tr style="color:#5eb0d6;">
+                <th>
+                    Livro
+                </th>
+                <th>
+                    Descrição
+                </th>
+                <th>
+                    Data de Edição do Usuário
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var status in Model){
+                @if (status.State == "A Ler")
+                {
+                    <tr>
+                        <td>
+                        @status.Book.Title
+                    </td>
+                    <td>
+                        @status.Book.Description
+                    </td>
+                    <td>
+                        @status.ReviewDate
+                    </td>
+                </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+    <br style="margin:10% 0;"/>
+
+    <h4 style="color: #5eb0d6;">Planeia Ler</h4>
+    <table class="table" style="color:white;">
+        <thead>
+            <tr style="color:#5eb0d6;">
+                <th>
+                    Livro
+                </th>
+                <th>
+                    Descrição
+                </th>
+                <th>
+                    Data de Edição do Usuário
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var status in Model)
+            {
+                @if (status.State == "Planeia Ler")
+                {
+                    <tr>
+                        <td>
+                            @status.Book.Title
+                        </td>
+                        <td>
+                            @status.Book.Description
+                        </td>
+                        <td>
+                            @status.ReviewDate
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+    <br style="margin:10% 0;" />
+
+    <h4 style="color: #5eb0d6;">Desistiu</h4>
+    <table class="table" style="color:white;">
+        <thead>
+            <tr style="color:#5eb0d6;">
+                <th>
+                    Livro
+                </th>
+                <th>
+                    Descrição
+                </th>
+                <th>
+                    Data de Edição do Usuário
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var status in Model)
+            {
+                @if (status.State == "Desistiu")
+                {
+                    <tr>
+                        <td>
+                            @status.Book.Title
+                        </td>
+                        <td>
+                            @status.Book.Description
+                        </td>
+                        <td>
+                            @status.ReviewDate
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
 }
 else
 {

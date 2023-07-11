@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using MyBookList.Data;
 using MyBookList.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace MyBookList.Controllers
 {
@@ -15,17 +17,33 @@ namespace MyBookList.Controllers
     public class StatusController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public StatusController(ApplicationDbContext context)
+        public StatusController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Status
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Status.Include(s => s.Book).Include(s => s.Member);
-            return View(await applicationDbContext.ToListAsync());
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var member = await _context.Members
+            .Include(m => m.StatusList)
+            .FirstOrDefaultAsync(m => m.UserId == userId);
+
+            if (member != null)
+            {
+                var statuses = await _context.Status
+                .Include(s => s.Book)
+                .Where(s => s.MemberFK == member.Id)
+                .ToListAsync();
+
+                return View(statuses);
+            }
+
+            return Problem("Member não encontrado.");
         }
 
         // GET: Status/Details/5
@@ -61,17 +79,33 @@ namespace MyBookList.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MemberFK,BookFK,State,ScoreRating,Review,ReviewDate")] Status status)
+        public async Task<IActionResult> Create(int bookId, int selectedStatus)
         {
-            if (ModelState.IsValid)
+            var book = await _context.Books.FindAsync(bookId);
+            var user = await _userManager.GetUserAsync(User); // Retrieve the currently logged-in user
+
+            if (book != null && user != null)
             {
-                _context.Add(status);
+                var member = await _context.Members.FirstOrDefaultAsync(m => m.UserId == user.Id);
+
+                var status = new Status
+                {
+                    BookFK = book.Id,
+                    Book = book,
+                    MemberFK = member.Id,
+                    Member = member,
+                    State = selectedStatus == 0 ? "A Ler" : selectedStatus == 1 ? "Planeia Ler" : "Desistiu",
+                    ReviewDate = DateTime.Now.ToString(),
+                };
+
+                book.StatusList.Add(status);
+                member.StatusList.Add(status);
+
+                _context.Status.Add(status);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
             }
-            ViewData["BookFK"] = new SelectList(_context.Books, "Id", "ISBN", status.BookFK);
-            ViewData["MemberFK"] = new SelectList(_context.Members, "Id", "Status", status.MemberFK);
-            return View(status);
+
+            return RedirectToAction(nameof(BooksController.Details), "Books", new { id = bookId });
         }
 
         // GET: Status/Edit/5
