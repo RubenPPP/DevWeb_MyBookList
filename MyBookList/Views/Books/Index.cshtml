@@ -4,12 +4,13 @@
     ViewData["Title"] = "Index";
 }
 
-@if (User.Identity.IsAuthenticated)
+@if (User.IsInRole("Admin"))
 {
     <p style="text-align:right; margin:2.5% 0;">
         <a asp-action="Create" style="text-decoration:none;">Adicionar Livro</a>
     </p>
 }
+
 <hr />
 
 <table class="table">

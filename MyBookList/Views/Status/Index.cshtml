@@ -4,6 +4,8 @@
     ViewData["Title"] = "Index";
 }
 
+@if (User.IsInRole("Admin"))
+{
 <h1>Index</h1>
 
 <p>
@@ -60,3 +62,8 @@
 }
     </tbody>
 </table>
+}
+else
+{
+    <meta http-equiv="refresh" content="0;url=@Url.Action("Index", "Home")" />
+}

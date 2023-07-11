@@ -4,47 +4,53 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+@if (User.IsInRole("Admin"))
+{
+    <h1>Edit</h1>
 
-<h4>Status</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="MemberFK" />
-            <input type="hidden" asp-for="BookFK" />
-            <div class="form-group">
-                <label asp-for="State" class="control-label"></label>
-                <input asp-for="State" class="form-control" />
-                <span asp-validation-for="State" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ScoreRating" class="control-label"></label>
-                <input asp-for="ScoreRating" class="form-control" />
-                <span asp-validation-for="ScoreRating" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Review" class="control-label"></label>
-                <input asp-for="Review" class="form-control" />
-                <span asp-validation-for="Review" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ReviewDate" class="control-label"></label>
-                <input asp-for="ReviewDate" class="form-control" />
-                <span asp-validation-for="ReviewDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+    <h4>Status</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="MemberFK" />
+                <input type="hidden" asp-for="BookFK" />
+                <div class="form-group">
+                    <label asp-for="State" class="control-label"></label>
+                    <input asp-for="State" class="form-control" />
+                    <span asp-validation-for="State" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ScoreRating" class="control-label"></label>
+                    <input asp-for="ScoreRating" class="form-control" />
+                    <span asp-validation-for="ScoreRating" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Review" class="control-label"></label>
+                    <input asp-for="Review" class="form-control" />
+                    <span asp-validation-for="Review" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ReviewDate" class="control-label"></label>
+                    <input asp-for="ReviewDate" class="form-control" />
+                    <span asp-validation-for="ReviewDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+}
+else
+{
+    <meta http-equiv="refresh" content="0;url=@Url.Action("Index", "Home")" />
+}
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MyBookList.Data;
 using MyBookList.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MyBookList.Controllers
 {
+    [Authorize]
     public class AuthorsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -20,6 +22,7 @@ namespace MyBookList.Controllers
         }
 
         // GET: Authors
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
               return _context.Authors != null ? 
@@ -28,6 +31,7 @@ namespace MyBookList.Controllers
         }
 
         // GET: Authors/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Authors == null)
@@ -46,6 +50,7 @@ namespace MyBookList.Controllers
         }
 
         // GET: Authors/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -56,6 +61,7 @@ namespace MyBookList.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([Bind("Id,Name,Biography")] Authors authors)
         {
             if (ModelState.IsValid)
@@ -68,6 +74,7 @@ namespace MyBookList.Controllers
         }
 
         // GET: Authors/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Authors == null)
@@ -88,6 +95,7 @@ namespace MyBookList.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Biography")] Authors authors)
         {
             if (id != authors.Id)
@@ -119,6 +127,7 @@ namespace MyBookList.Controllers
         }
 
         // GET: Authors/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Authors == null)
@@ -139,6 +148,7 @@ namespace MyBookList.Controllers
         // POST: Authors/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Authors == null)

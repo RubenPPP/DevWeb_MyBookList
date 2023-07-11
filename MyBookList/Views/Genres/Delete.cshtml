@@ -4,6 +4,8 @@
     ViewData["Title"] = "Delete";
 }
 
+@if (User.IsInRole("Admin"))
+{
 <div class="d-flex justify-content-between" style="margin: 2.5% 5% 1%;">
     <a type="button" style="width:100px; text-align:center;" class="btn btn-outline-primary btn-sm" asp-action="Index">Voltar</a>
 </div>
@@ -28,3 +30,8 @@
         </form>
     </div>
 </div>
+}
+else
+{
+    <meta http-equiv="refresh" content="0;url=@Url.Action("Index", "Home")" />
+}

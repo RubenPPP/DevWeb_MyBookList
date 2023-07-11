@@ -4,35 +4,43 @@
     ViewData["Title"] = "Details";
 }
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
+@if (User.IsInRole("Admin"))
+{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
         const showDeleteButton = document.getElementById('showDeleteButton');
         const hideDeleteButton = document.getElementById('hideDeleteButton');
         const deleteModal = document.getElementById('deleteModal');
 
         function showDeleteModal() {
-            deleteModal.style.display = 'block';
+        deleteModal.style.display = 'block';
         }
 
         function hideDeleteModal() {
-            deleteModal.style.display = 'none';
+        deleteModal.style.display = 'none';
         }
 
         showDeleteButton.addEventListener('click', showDeleteModal);
         hideDeleteButton.addEventListener('click', hideDeleteModal);
-    });
-</script>
+        });
+    </script>
 
-<div class="d-flex justify-content-between" style="margin: 2.5% 5% 1%;">
-    <div>
+    <div class="d-flex justify-content-between" style="margin: 2.5% 5% 1%;">
+        <div>
+            <a type="button" style="width:100px; text-align:center;" class="btn btn-outline-primary btn-sm" asp-action="Index">Voltar</a>
+        </div>
+        <div>
+            <a type="button" style="width:100px; text-align:center;" class="btn btn-outline-primary btn-sm" asp-action="Edit" asp-route-id="@Model?.Id">Editar</a>
+            <button id="showDeleteButton" style="width:100px; text-align:center;" class="btn btn-outline-primary btn-sm">Apagar</button>
+        </div>
+    </div>
+}
+else
+{
+    <div style="margin: 2.5% 5% 1%;">
         <a type="button" style="width:100px; text-align:center;" class="btn btn-outline-primary btn-sm" asp-action="Index">Voltar</a>
     </div>
-    <div>
-        <a type="button" style="width:100px; text-align:center;" class="btn btn-outline-primary btn-sm" asp-action="Edit" asp-route-id="@Model?.Id">Editar</a>
-        <button id="showDeleteButton" style="width:100px; text-align:center;" class="btn btn-outline-primary btn-sm">Apagar</button>
-    </div>
-</div>
-
+}
 <hr />
 
 <div style="color: white;">
@@ -47,7 +55,7 @@
                         @if (Model.GenresList != null && Model.GenresList.Any())
                             @foreach (var genre in Model.GenresList)
                             {
-                                <a asp-controller="Genres" asp-action="Details" asp-route-id="@genre.Id">@genre.Genre</a>
+                                @genre.Genre
                                 if (genre != Model.GenresList.Last())
                                 {
                                     <span>, </span>
@@ -96,6 +104,8 @@
     </div>
 </div>
 
+@if (User.IsInRole("Admin"))
+{
 <div id="deleteModal" class="modal" style="display:none;">
     <div class="modal-dialog">
         <div class="modal-content" style="background-color:#181a1b;">
@@ -114,3 +124,4 @@
         </div>
     </div>
 </div>
+}

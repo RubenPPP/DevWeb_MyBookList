@@ -4,6 +4,8 @@
     ViewData["Title"] = "Details";
 }
 
+@if (User.IsInRole("Admin"))
+{
 <h1>Details</h1>
 
 <div>
@@ -49,3 +51,8 @@
     @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
     <a asp-action="Index">Back to List</a>
 </div>
+}
+else
+{
+    <meta http-equiv="refresh" content="0;url=@Url.Action("Index", "Home")" />
+}

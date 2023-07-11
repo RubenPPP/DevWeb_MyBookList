@@ -4,13 +4,15 @@
     ViewData["Title"] = "Index";
 }
 
+@if (User.IsInRole("Admin"))
+{
 <p style="text-align:right; margin:2.5% 0;">
     <a asp-action="Create" style="text-decoration:none;">Adicionar Género</a>
 </p>
 
 <hr />
 
-<table class="table">
+<table class="table" style="color:white;">
     <thead>
         <tr>
             <th>
@@ -33,3 +35,8 @@
 }
     </tbody>
 </table>
+}
+else
+{
+    <meta http-equiv="refresh" content="0;url=@Url.Action("Index", "Home")" />
+}
